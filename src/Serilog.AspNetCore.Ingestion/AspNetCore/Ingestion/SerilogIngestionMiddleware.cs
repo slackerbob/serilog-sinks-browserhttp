@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Debugging;
+using Serilog.Events;
 using Serilog.Formatting.Compact.Reader;
 
 namespace Serilog.AspNetCore.Ingestion
@@ -68,6 +69,7 @@ namespace Serilog.AspNetCore.Ingestion
                             if (_originPropertyName != null)
                                 evt.RemovePropertyIfPresent(_originPropertyName); // Ensure the client can't override this
     
+                            evt.AddPropertyIfAbsent(new LogEventProperty("ClientIpAddress", new ScalarValue(context.Connection.RemoteIpAddress)));
                             _log.Write(evt);
                         }
                     }
