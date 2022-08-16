@@ -70,6 +70,7 @@ namespace Serilog.AspNetCore.Ingestion
                                 evt.RemovePropertyIfPresent(_originPropertyName); // Ensure the client can't override this
     
                             evt.AddPropertyIfAbsent(new LogEventProperty("ClientIpAddress", new ScalarValue(context.Connection.RemoteIpAddress)));
+                            evt.AddPropertyIfAbsent(new LogEventProperty("ClientUserAgent", new ScalarValue(context.Request.Headers["User-Agent"])));
                             _log.Write(evt);
                         }
                     }
